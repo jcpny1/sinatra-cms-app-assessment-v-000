@@ -13,10 +13,6 @@ class ApplicationController < Sinatra::Base
     erb :index
   end
 
-  def self.slug(name)
-    name.tr(' ', '-').tr("'", "").downcase
-  end
-
 	helpers do
 		def logged_in?
 			!!session[:user_id]

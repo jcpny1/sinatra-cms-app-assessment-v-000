@@ -1,18 +1,8 @@
 class UserController < ApplicationController
 
-  configure do
-    set :public_folder, 'public'
-    set :views, 'app/views'
-    enable :sessions
-		set :session_secret, "password_security"
-  end
-
   get '/login' do
-    if logged_in?
-      redirect '/tweets'
-    else
-	    erb :'/users/login'
-    end
+    redirect '/purchases' if logged_in?
+    erb :'/users/login'
 	end
 
 	get '/logout' do
@@ -21,37 +11,27 @@ class UserController < ApplicationController
 	end
 
   get '/signup' do
-    if logged_in?
-      redirect '/tweets'
-    else
-      erb :'/users/signup'
-    end
+    redirect '/purchases' if logged_in?
+    erb :'/users/signup'
 	end
-
-  get '/users/:slug' do
-    user = User.find_by(name: params[:slug])
-    @tweets = Tweet.find_by(user_id: user.id)
-    erb :'/tweets/show'
-  end
 
   post '/login' do
     user = User.find_by(:username => params[:username])
     if user && user.authenticate(params[:password])
       session[:user_id] = user.id
-      redirect '/tweets'
+      redirect '/purchases'
     else
-      redirect '/failure'
+      redirect '/login'
     end
   end
 
-	post '/signup' do
+	post '/signup'  do
     user = User.new(:username => params[:username], :email => params[:email], :password => params[:password])
     if user.save
       session[:user_id] = user.id
-      redirect '/tweets'
+      redirect '/purchases'
     else
       redirect '/signup'
     end
 	end
-
 end
