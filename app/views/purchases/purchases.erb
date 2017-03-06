@@ -1,2 +1,29 @@
 <h3>Acme Credit Purchases</h3>
-<a href="/logout">Log out</a>
+
+<p>Customer: <%= @user.name %></p>
+<% @purchases.each do |purchase| %>
+  <% purchase_items = purchase.purchase_items %>
+  <% purchase_items.each do |purchase_item| %>
+    <table>
+      <tr>
+        <td>Transaction #: <%= purchase.id %></td>
+        <td><%= purchase.created_at.to_time.getlocal("-05:00").asctime %></td>
+      </tr>
+    </table>
+    <table border="1px solid #dddddd" style="text-align: center;">
+      <tr>
+        <th>Item</th>
+        <th>Price</th>
+        <th>Quantity</th>
+      </tr>
+      <tr>
+        <td><%= purchase_item.item.name %></td>
+        <td><%= purchase_item.sale_price %></td>
+        <td><%= purchase_item.quantity %></td>
+      </tr>
+    </table>
+  <% end %>
+<% end %>
+
+<p><a href="/purchase">Make new purchase</a></p>
+<p><a href="/logout">Log out</a></p>

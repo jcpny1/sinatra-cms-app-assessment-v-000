@@ -35,9 +35,18 @@ class PurchaseController < ApplicationController
   #   end
 	# end
   #
+  get '/purchase' do
+    redirect '/login' if !logged_in?
+    user_id = session[:user_id]
+    @user = User.find(user_id)
+    erb :'/purchases/new'
+	end
+
   get '/purchases' do
     redirect '/login' if !logged_in?
-    @purchases = Purchase.where(user_id: session[:user_id])
+    user_id = session[:user_id]
+    @user = User.find(user_id)
+    @purchases = Purchase.where(user_id: user_id)
     erb :'/purchases/purchases'
 	end
   #
