@@ -37,10 +37,10 @@ class PurchaseController < ApplicationController
   #
   get '/purchase/:id' do
     redirect '/login' if !logged_in?
-    user_id = session[:user_id]
-    @user = User.find(user_id)
-    @purchase = Purchase.find(params[:id])
-    erb :'/purchases/purchase'
+    @user = User.find(session[:user_id])
+    @purchases = []
+    @purchases << Purchase.find(params[:id])
+    erb :'/purchases/purchases'
 	end
 
   get '/purchase' do
