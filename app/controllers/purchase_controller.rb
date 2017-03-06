@@ -35,6 +35,14 @@ class PurchaseController < ApplicationController
   #   end
 	# end
   #
+  get '/purchase/:id' do
+    redirect '/login' if !logged_in?
+    user_id = session[:user_id]
+    @user = User.find(user_id)
+    @purchase = Purchase.find(params[:id])
+    erb :'/purchases/purchase'
+	end
+
   get '/purchase' do
     redirect '/login' if !logged_in?
     user_id = session[:user_id]
@@ -71,9 +79,14 @@ class PurchaseController < ApplicationController
   #   end
   # end
   #
-  # post '/tweets' do
-  #   tweet = Tweet.create(user_id: session[:user_id], content: params[:content])
-  #   redirect '/tweets/new'
-  # end
-  #
+  post '/purchase' do
+    puts params
+    redirect '/login' if !logged_in?
+    purchase = Purchase.new(user_id: session[:user_id])
+    purchase_item = PurchaseItem.new(purchase_id: purchase.id, item: Item.find(params[:select_item]), sale_price: params[:price], quantity: params[:quantity])
+    purchase.purchase_items << purchase_item
+    purchase.save
+    redirect "/purchase/#{purchase.id}"
+  end
+
 end

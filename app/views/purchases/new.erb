@@ -1,5 +1,18 @@
 <h3>Acme Credit Purchase</h3>
 
+<p>Customer: <%= @user.name %></p>
 
-<p><a href="/purchase">Make new purchase</a></p>
+<form method="post" action="/purchase">
+  <p>Item:
+    <select name="select_item">
+      <% Item.all.each do |item| %>
+        <option value="<%= item.id %>"><%= item.name %></option>
+        <% end %>
+      </select></p>
+  <p>Quantity: <input type="number" name="quantity" value="1"></p>
+  <p>Price: <input type="number" name="price"></p>
+  <p><input type="submit" value="Submit"></p>
+</form>
+
+<p><a href="/purchase">Cancel purchase</a></p>
 <p><a href="/logout">Log out</a></p>
