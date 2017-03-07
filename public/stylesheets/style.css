@@ -1,0 +1,22 @@
+h3 {
+  font-size: 2em;
+  margin: 0.67em 0;
+}
+
+table {
+  border: 3px solid #dddddd;
+  border-collapse: collapse;
+  style: text-align: center;
+}
+
+table#noborder {
+  border: 0;
+}
+
+td {
+    text-align: center;
+}
+
+td#timestamp {
+    style: text-align: right;
+}

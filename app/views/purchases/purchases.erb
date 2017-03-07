@@ -2,30 +2,31 @@
 
 <p>for: <%= @user.name %></p>
 <% @purchases.each do |purchase| %>
-  <table>
+  <table id="noborder">
     <tr>
       <td>Transaction #: <%= purchase.id %></td>
-      <td><%= purchase.created_at.to_time.getlocal("-05:00").asctime %></td>
+      <td id="timestamp"><%= purchase.created_at.to_time.getlocal("-05:00").asctime %></td>
     </tr>
   </table>
-  <% purchase.purchase_items.each do |purchase_item| %>
-    <table border="1px solid #dddddd" style="text-align: center;">
-      <tr>
-        <th>Category</th>
-        <th>Item</th>
-        <th>Price</th>
-        <th>Quantity</th>
-      </tr>
+  <table>
+    <tr>
+      <th>Category</th>
+      <th>Item</th>
+      <th>Quantity</th>
+      <th>Price</th>
+    </tr>
+    <% purchase.purchase_items.each do |purchase_item| %>
       <tr>
         <td><%= purchase_item.item.category.name %></td>
         <td><%= purchase_item.item.name %></td>
-        <td><%= purchase_item.sale_price %></td>
         <td><%= purchase_item.quantity %></td>
+        <td style="text-align: right"><%= format("%.2f", purchase_item.sale_price) %></td>
       </tr>
-    </table>
-  <% end %>
+    <% end %>
+  </table>
   <br>
 <% end %>
 
 <p><a href="/purchase">Make a new purchase</a></p>
+<p><a href="/purchases">Show all purchases</a></p>
 <p><a href="/logout">Log out</a></p>

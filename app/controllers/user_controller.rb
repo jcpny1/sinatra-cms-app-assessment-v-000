@@ -7,7 +7,7 @@ class UserController < ApplicationController
 
 	get '/logout' do
 		session.clear
-		redirect '/login'
+		redirect '/'
 	end
 
   get '/signup' do
@@ -26,7 +26,7 @@ class UserController < ApplicationController
   end
 
 	post '/signup'  do
-    user = User.new(:username => params[:username], :email => params[:email], :password => params[:password])
+    user = User.new(params)
     if user.save
       session[:user_id] = user.id
       redirect '/purchases'
