@@ -1,32 +1,48 @@
-<h3>Acme Credit Purchases</h3>
+<header>
+		<h1>Acme Credit Purchases</h1>
+</header>
 
-<p>for: <%= @user.name %></p>
-<% @purchases.each do |purchase| %>
-  <table id="noborder">
-    <tr>
-      <td>Transaction #: <%= purchase.id %></td>
-      <td id="timestamp"><%= purchase.created_at.to_time.getlocal("-05:00").asctime %></td>
-    </tr>
-  </table>
-  <table>
-    <tr>
-      <th>Category</th>
-      <th>Item</th>
-      <th>Quantity</th>
-      <th>Price</th>
-    </tr>
-    <% purchase.purchase_items.each do |purchase_item| %>
+<nav>
+  <ul>
+    <li><a href="/purchase">Make a new purchase</a></li><br>
+    <li><a href="/purchases">Show all purchases</a></li><br>
+    <li><a href="/logout">Log out</a></li>
+  </ul>
+</nav>
+
+<article>
+  <p>Customer: <strong><%= @user.name %></strong></p>
+  <% @purchases.each do |purchase| %>
+    <table id="noborder" width="25%">
       <tr>
-        <td><%= purchase_item.item.category.name %></td>
-        <td><%= purchase_item.item.name %></td>
-        <td><%= purchase_item.quantity %></td>
-        <td style="text-align: right"><%= format("%.2f", purchase_item.sale_price) %></td>
+        <td>Transaction #: <%= purchase.id %></td>
+        <td id="timestamp"><%= purchase.created_at.to_time.getlocal("-05:00").asctime %></td>
       </tr>
-    <% end %>
-  </table>
+    </table>
+    <table width="50%">
+      <tr>
+        <th class="category">Category</th>
+        <th class="item">Item</th>
+        <th class="quantity">Quantity</th>
+        <th class="price">Price</th>
+      </tr>
+      <% total = 0.0 %>
+      <% purchase.purchase_items.each do |purchase_item| %>
+        <tr>
+          <td class="category"><%= purchase_item.item.category.name %></td>
+          <td class="item"><%= purchase_item.item.name %></td>
+          <td class="quantity"><%= purchase_item.quantity %></td>
+          <td class="price"><%= format("%.2f", purchase_item.sale_price) %></td>
+        </tr>
+        <% total += purchase_item.sale_price %>
+      <% end %>
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td class="total"><%= format("%.2f", total) %></td>
+      </tr>
+    </table>
   <br>
-<% end %>
-
-<p><a href="/purchase">Make a new purchase</a></p>
-<p><a href="/purchases">Show all purchases</a></p>
-<p><a href="/logout">Log out</a></p>
+  <% end %>
+</article>

@@ -1,9 +1,45 @@
+div.container {
+    width: 100%;
+    border: 1px solid gray;
+}
+
+header, footer {
+    padding: 1em;
+    color: white;
+    background-color: black;
+    clear: left;
+    text-align: center;
+}
+
+nav {
+    float: left;
+    max-width: 160px;
+    margin: 0;
+    padding: 1em;
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+/*nav ul a {
+    text-decoration: none;
+}*/
+
+article {
+    margin-left: 170px;
+    border-left: 1px solid gray;
+    padding: 1em;
+    overflow: hidden;
+}
+
 h3 {
   font-size: 2em;
   margin: 0.67em 0;
 }
 
-table {
+/*table {
   border: 3px solid #dddddd;
   border-collapse: collapse;
   style: text-align: center;
@@ -19,4 +55,33 @@ td {
 
 td#timestamp {
     style: text-align: right;
+}*/
+
+th.category, td.category {
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+  width: 25%
+}
+
+th.item, td.item {
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+  width: 40%
+}
+
+th.quantity, td.quantity {
+  border-bottom: 1px solid #ddd;
+  text-align: center;
+  width: 20%
+}
+
+th.price, td.price {
+  border-bottom: 1px solid #ddd;
+  text-align: right;
+  width: 15%
+}
+
+td.total {
+  text-align: right;
+  width: 15%
 }

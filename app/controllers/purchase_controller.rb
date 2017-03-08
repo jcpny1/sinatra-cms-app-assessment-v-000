@@ -25,14 +25,19 @@ class PurchaseController < ApplicationController
     puts params
     redirect '/login' if !logged_in?
     purchase = Purchase.new(user_id: session[:user_id])
+    purchase_item = nil
     (1..3).each do |i|
       if params["select_item_#{i}"] != "0" && params["price_#{i}"].to_f > 0 && params["quantity_#{i}"].to_i > 0
         purchase_item = PurchaseItem.new(purchase_id: purchase.id, item: Item.find(params["select_item_#{i}"]), sale_price: params["price_#{i}"], quantity: params["quantity_#{i}"])
         purchase.purchase_items << purchase_item
       end
     end
-    purchase.save
-    redirect "/purchase/#{purchase.id}"
+    if !purchase_item.nil?
+      purchase.save
+      redirect "/purchase/#{purchase.id}"
+    else
+      redirect "/purchase"
+    end
   end
 
 end
