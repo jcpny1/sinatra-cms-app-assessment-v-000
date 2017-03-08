@@ -1,25 +1,45 @@
-<h3>Acme Credit Signup</h3>
-<form action="/signup" method="POST">
-  <table cellspacing="5">
-    <tr>
-      <td>Username</td>
-      <td><input type="text" name="username"></td>
-    </tr>
-    <tr>
-      <td>Password</td>
-      <td><input type="password" name="password"></td>
-    </tr>
-    <tr>
-      <td>Name</td>
-      <td><input type="text" name="name"></td>
-    </tr>
-    <tr>
-      <td>Email</td>
-      <td><input type="email" name="email"></td>
-    </tr>
-    <tr>
-      <td></td>
-      <td><input type="submit" value="Submit"></td>
-    </tr>
-  </table>
-</form>
+<header>
+		<h1>Acme Credit Signup</h1>
+</header>
+
+<nav>
+  <ul>
+    <li><a href="/">Cancel signup</a></li>
+  </ul>
+</nav>
+
+<article>
+	<% if flash.has?(:message) %>
+		<font color="red">
+		<% flash[:message].each do |msg| %>
+			<% if !msg.include?('Password digest') %>
+				<%= msg %><br>
+			<% end %>
+		<% end %>
+		</font>
+	<% end %>
+  <form action="/signup" method="POST">
+    <table cellspacing="5">
+      <tr>
+        <td>Username</td>
+        <td><input type="text" name="username"></td>
+      </tr>
+      <tr>
+        <td>Password</td>
+        <td><input type="password" name="password" size="21"></td>
+      </tr>
+      <tr>
+        <td>Name</td>
+        <td><input type="text" name="name"></td>
+      </tr>
+      <tr>
+        <td>Email</td>
+        <td><input type="email" name="email"></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><input type="submit" value="Signup"></td>
+      </tr>
+    </table>
+  </form>
+</article>

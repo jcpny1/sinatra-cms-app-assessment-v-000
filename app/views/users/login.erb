@@ -1,17 +1,33 @@
-<h3>Acme Credit Login</h3>
-<form action="/login" method="POST">
-  <table cellspacing="5">
-    <tr>
-      <td>Username</td>
-      <td><input type="text" name="username"></td>
-    </tr>
-    <tr>
-      <td>Password</td>
-      <td><input type="password" name="password"></td>
-    </tr>
-    <tr>
-      <td></td>
-      <td><input type="submit" value="Submit"></td>
-    </tr>
-  </table>
-</form>
+<header>
+		<h1>Acme Credit Login</h1>
+</header>
+
+<nav>
+  <ul>
+    <li><a href="/">Cancel login</a></li>
+  </ul>
+</nav>
+
+<article>
+	<% if flash.has?(:message) %>
+		<font color="red">
+			<%= flash[:message] %><br>
+		</font>
+	<% end %>
+  <form action="/login" method="POST">
+    <table cellspacing="5">
+      <tr>
+        <td>Username</td>
+        <td><input type="text" name="username"></td>
+      </tr>
+      <tr>
+        <td>Password</td>
+        <td><input type="password" name="password" size="21"></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><input type="submit" value="Login"></td>
+      </tr>
+    </table>
+  </form>
+</article>

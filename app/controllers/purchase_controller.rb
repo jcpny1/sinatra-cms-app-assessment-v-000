@@ -1,10 +1,18 @@
 class PurchaseController < ApplicationController
 
-  get '/purchase/:id' do
+  get '/purchases' do
     redirect '/login' if !logged_in?
     @user = current_user
-    @purchases = []
-    @purchases << Purchase.find(params[:id])
+    @purchases = Purchase.where(["user_id = ?", "#{@user.id}"])
+    halt(404) if @purchases.size == 0
+    erb :'/purchases/purchases'
+	end
+
+  get "/purchase/:id" do                       # Adding another level to the path seems to break style.css
+    redirect '/login' if !logged_in?
+    @user = current_user
+    @purchases = Purchase.where(["id = ? and user_id = ?", "#{params[:id]}", "#{@user.id}"])
+    halt(404) if @purchases.size == 0
     erb :'/purchases/purchases'
 	end
 
@@ -14,17 +22,10 @@ class PurchaseController < ApplicationController
     erb :'/purchases/new'
 	end
 
-  get '/purchases' do
+  post '/purchase' do
     redirect '/login' if !logged_in?
     @user = current_user
-    @purchases = Purchase.where(user_id: @user.id)
-    erb :'/purchases/purchases'
-	end
-
-  post '/purchase' do
-    puts params
-    redirect '/login' if !logged_in?
-    purchase = Purchase.new(user_id: session[:user_id])
+    purchase = Purchase.new(user_id: @user.id)
     purchase_item = nil
     (1..3).each do |i|
       if params["select_item_#{i}"] != "0" && params["price_#{i}"].to_f > 0 && params["quantity_#{i}"].to_i > 0
@@ -36,7 +37,8 @@ class PurchaseController < ApplicationController
       purchase.save
       redirect "/purchase/#{purchase.id}"
     else
-      redirect "/purchase"
+      flash[:message] = "At least one row must be filled in completely."
+      redirect '/purchase'
     end
   end
 

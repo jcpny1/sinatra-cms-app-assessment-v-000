@@ -21,6 +21,7 @@ class UserController < ApplicationController
       session[:user_id] = user.id
       redirect '/purchases'
     else
+      flash[:message] = "Username and/or password are incorrect."
       redirect '/login'
     end
   end
@@ -31,6 +32,7 @@ class UserController < ApplicationController
       session[:user_id] = user.id
       redirect '/purchases'
     else
+      flash[:message] = user.errors.full_messages
       redirect '/signup'
     end
 	end
