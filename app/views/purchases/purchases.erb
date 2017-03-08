@@ -13,13 +13,13 @@
 <article>
   <p>Customer: <strong><%= @user.name %></strong></p>
   <% @purchases.each do |purchase| %>
-    <table id="noborder" width="25%">
+    <table width="50%">
       <tr>
         <td>Transaction #: <%= purchase.id %></td>
-        <td id="timestamp"><%= purchase.created_at.to_time.getlocal("-05:00").asctime %></td>
+        <td><%= purchase.created_at.to_time.getlocal("-05:00").asctime %></td>
+				<td><a href="/purchase/<%= purchase.id %>/edit">Edit</a></td>
+				<td><a href="/purchase/<%= purchase.id %>/delete">Delete</a></td>
       </tr>
-    </table>
-    <table width="50%">
       <tr>
         <th class="category">Category</th>
         <th class="item">Item</th>

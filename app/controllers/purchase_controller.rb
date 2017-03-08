@@ -3,17 +3,29 @@ class PurchaseController < ApplicationController
   get '/purchases' do
     redirect '/login' if !logged_in?
     @user = current_user
-    @purchases = Purchase.where(["user_id = ?", "#{@user.id}"])
-    halt(404) if @purchases.size == 0
+    if session[:purchases]
+      @purchases = session[:purchases]
+      session.delete(:purchases)
+    else
+      @purchases = Purchase.where(["user_id = ?", "#{@user.id}"])
+    end
     erb :'/purchases/purchases'
 	end
 
-  get "/purchase/:id" do                       # Adding another level to the path seems to break style.css
+  get '/purchase/:id/delete' do
     redirect '/login' if !logged_in?
     @user = current_user
-    @purchases = Purchase.where(["id = ? and user_id = ?", "#{params[:id]}", "#{@user.id}"])
-    halt(404) if @purchases.size == 0
-    erb :'/purchases/purchases'
+    @purchase = Purchase.where(["id = ? and user_id = ?", "#{params[:id]}", "#{@user.id}"])
+    halt(404) if @purchase.size == 0
+    @purchase.first.delete
+    redirect '/purchases'
+  end
+
+  get '/purchase/:id' do                       # Adding another level to the path seems to break style.css, so redirect to /purchases instead.
+    redirect '/login' if !logged_in?
+    user = current_user
+    session[:purchases] = Purchase.where(["id = ? and user_id = ?", "#{params[:id]}", "#{user.id}"])
+    redirect '/purchases'
 	end
 
   get '/purchase' do
@@ -41,5 +53,4 @@ class PurchaseController < ApplicationController
       redirect '/purchase'
     end
   end
-
 end
