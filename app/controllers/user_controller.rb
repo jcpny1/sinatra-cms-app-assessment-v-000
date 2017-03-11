@@ -1,5 +1,10 @@
 class UserController < ApplicationController
 
+  configure do
+    enable :sessions
+		set :session_secret, "password_security"
+  end
+
   get '/login' do
     redirect '/purchases' if logged_in?
     erb :'/users/login'
