@@ -38,8 +38,9 @@ class PurchaseController < ApplicationController
     redirect '/login' if !logged_in?
     session[:show] = params[:id]
     redirect '/purchase-workaround'
-    # @purchases = [@user.purchases.find_by(id: params[:id])]
-    # erb :'/purchases/index'
+# @user = current_user
+# @purchases = [@user.purchases.find_by(id: params[:id])]
+# erb :'/purchases/index'
 	end
 
   get '/purchase' do
