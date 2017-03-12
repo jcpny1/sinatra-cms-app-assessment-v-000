@@ -7,7 +7,7 @@ class PurchaseController < ApplicationController
     erb :'/purchases/index'
 	end
 
-  get '/purchase-workaround' do            # More than one level on the get path breaks css styling, so redirect to /purchases as a workaround.
+  get '/purchases-workaround' do            # More than one level on the get path breaks css styling, so redirect to /purchases as a workaround.
     redirect '/login' if !logged_in?
     @user = current_user
     if session[:edit]
@@ -21,35 +21,35 @@ class PurchaseController < ApplicationController
     end
   end
 
-  get '/purchase/:id/delete' do            # More than one level on the get path breaks css styling, so redirect to /purchases as a workaround.
+  get '/purchases/:id/delete' do            # More than one level on the get path breaks css styling, so redirect to /purchases as a workaround.
     redirect '/login' if !logged_in?
     purchase = current_user.purchases.find_by(params[:id])
     purchase.destroy if !purchase.nil?
     redirect '/purchases'
   end
 
-  get '/purchase/:id/edit' do              # More than one level on the get path breaks css styling, so redirect to /purchases as a workaround.
+  get '/purchases/:id/edit' do              # More than one level on the get path breaks css styling, so redirect to /purchases as a workaround.
     redirect '/login' if !logged_in?
     session[:edit] = params[:id]
-    redirect '/purchase-workaround'
+    redirect '/purchases-workaround'
   end
 
-  get '/purchase/:id' do                   # More than one level on the get path breaks css styling, so redirect to /purchases as a workaround.
+  get '/purchases/:id' do                   # More than one level on the get path breaks css styling, so redirect to /purchases as a workaround.
     redirect '/login' if !logged_in?
     session[:show] = params[:id]
-    redirect '/purchase-workaround'
+    redirect '/purchases-workaround'
 # @user = current_user
 # @purchases = [@user.purchases.find_by(id: params[:id])]
 # erb :'/purchases/index'
 	end
 
-  get '/purchase' do
+  get '/purchases' do
     redirect '/login' if !logged_in?
     @user = current_user
     erb :'/purchases/new'
 	end
 
-  post '/purchase' do
+  post '/purchases' do
     redirect '/login' if !logged_in?
     user = current_user
     purchase = Purchase.new(user_id: user.id)
@@ -59,16 +59,16 @@ class PurchaseController < ApplicationController
         purchase.purchase_items << PurchaseItem.new(purchase_id: purchase.id, item: Item.find(params["select_item_#{i}"]), sale_price: params["price_#{i}"], quantity: params["quantity_#{i}"])
       end
     end
-    if purchase.purchase_items.size > 0     # duplicate code with patch '/purchase/:id'
+    if purchase.purchase_items.size > 0     # duplicate code with patch '/purchases/:id'
       purchase.save
-      redirect "/purchase/#{purchase.id}"
+      redirect "/purchases/#{purchase.id}"
     else
       flash[:message] = "A purchase requires at least one purchase item."
-      redirect "/purchase/#{purchase.id}/edit"
+      redirect "/purchases/#{purchase.id}/edit"
     end
   end
 
-  patch '/purchase/:id' do
+  patch '/purchases/:id' do
     redirect '/login' if !logged_in?
     user = current_user
     purchase = user.purchases.find_by(id: params[:id])
@@ -86,12 +86,12 @@ class PurchaseController < ApplicationController
         purchase.purchase_items << PurchaseItem.new(purchase_id: purchase.id, item: Item.find(params["select_item_#{i}"]), sale_price: params["price_#{i}"], quantity: params["quantity_#{i}"])
       end
     end
-    if purchase.purchase_items.size > 0     # duplicate code with post '/purchase'
+    if purchase.purchase_items.size > 0     # duplicate code with post '/purchases'
       purchase.save
-      redirect "/purchase/#{purchase.id}"
+      redirect "/purchases/#{purchase.id}"
     else
-      flash[:message] = "A purchase requires at least one purchase item."
-      redirect "/purchase/#{purchase.id}/edit"
+      flash[:message] = "A purchase requires at least one item."
+      redirect "/purchases/#{purchase.id}/edit"
     end
   end
 end
