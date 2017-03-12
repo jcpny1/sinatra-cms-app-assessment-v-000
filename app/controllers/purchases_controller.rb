@@ -16,14 +16,17 @@ class PurchaseController < ApplicationController
   get '/purchases-workaround' do            # More than one level on the get path breaks css styling, so redirect to /purchases as a workaround.
     redirect '/login' if !logged_in?
     @user = current_user
-    if session[:edit]
-      @purchase = @user.purchases.find_by(id: session[:edit])
-      session.delete(:edit)
+    purchase_action = session[:purchases].first[0]
+    purchase_id     = session[:purchases].first[1]
+    case purchase_action
+    when :edit
+      @purchase = @user.purchases.find_by(id: purchase_id)
       erb :'/purchases/edit' if !@purchase.nil?
-    elsif session[:show]
-      @purchases = [@user.purchases.find_by(id: session[:show])]
-      session.delete(:show)
+    when :show
+      @purchases = [@user.purchases.find_by(id: purchase_id)]
       erb :'/purchases/index' if !@purchases.first.nil?
+    else
+      halt 404
     end
   end
 
@@ -36,13 +39,13 @@ class PurchaseController < ApplicationController
 
   get '/purchases/:id/edit' do              # More than one level on the get path breaks css styling, so redirect to /purchases as a workaround.
     redirect '/login' if !logged_in?
-    session[:edit] = params[:id]
+    session[:purchases] = {edit: params[:id]}
     redirect '/purchases-workaround'
   end
 
   get '/purchases/:id' do                   # More than one level on the get path breaks css styling, so redirect to /purchases as a workaround.
     redirect '/login' if !logged_in?
-    session[:show] = params[:id]
+    session[:purchases] = {show: params[:id]}
     redirect '/purchases-workaround'
 # @user = current_user
 # @purchases = [@user.purchases.find_by(id: params[:id])]
