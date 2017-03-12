@@ -29,7 +29,7 @@
         <% end %>
       </select>
       Quantity: <input type="number" name="quantity_<%= i %>" value="<% if (@purchase.purchase_items.size > i) %> <%= @purchase.purchase_items[i].quantity %> <% else %> <%= '' %> <% end %>">
-      Price: <input type="number" step="0.01" name="price_<%= i %>" value="<% if (@purchase.purchase_items.size > i) %> <%= @purchase.purchase_items[i].sale_price %> <% else %> <%= '' %> <% end %>">
+      Price: <input type="number" step="0.01" name="price_<%= i %>" value="<% if (@purchase.purchase_items.size > i) %> <%= format("%.2f", @purchase.purchase_items[i].sale_price) %> <% else %> <%= '' %> <% end %>">
       </p>
     <% end %>
     <p><input type="submit" value="Update"></p>

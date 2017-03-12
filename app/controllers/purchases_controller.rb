@@ -19,11 +19,11 @@ class PurchaseController < ApplicationController
     if session[:edit]
       @purchase = @user.purchases.find_by(id: session[:edit])
       session.delete(:edit)
-      !@purchase.nil? ? (erb :'/purchases/edit') : (redirect '/purchases')
+      erb :'/purchases/edit' if !@purchase.nil?
     elsif session[:show]
       @purchases = [@user.purchases.find_by(id: session[:show])]
       session.delete(:show)
-      !@purchases.first.nil? ? (erb :'/purchases/index') : (redirect '/purchases')
+      erb :'/purchases/index' if !@purchases.first.nil?
     end
   end
 
@@ -31,7 +31,7 @@ class PurchaseController < ApplicationController
     redirect '/login' if !logged_in?
     purchase = current_user.purchases.find_by(id: params[:id])
     purchase.destroy if !purchase.nil?
-    redirect '/purchases'
+    redirect '/purchases' if !purchase.nil?
   end
 
   get '/purchases/:id/edit' do              # More than one level on the get path breaks css styling, so redirect to /purchases as a workaround.
