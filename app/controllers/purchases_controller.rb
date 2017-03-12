@@ -13,7 +13,7 @@ class PurchaseController < ApplicationController
     erb :'/purchases/new'
 	end
 
-  get '/purchases-workaround' do            # More than one level on the get path breaks css styling, so redirect to /purchases as a workaround.
+  get '/purchases-workaround' do            # More than one level on the get path breaks css styling, so redirect here as a workaround.
     redirect '/login' if !logged_in?
     @user = current_user
     purchase_action = session[:purchases].first[0]
@@ -30,20 +30,20 @@ class PurchaseController < ApplicationController
     end
   end
 
-  get '/purchases/:id/delete' do            # More than one level on the get path breaks css styling, so redirect to /purchases as a workaround.
+  get '/purchases/:id/delete' do
     redirect '/login' if !logged_in?
     purchase = current_user.purchases.find_by(id: params[:id])
     purchase.destroy if !purchase.nil?
     redirect '/purchases' if !purchase.nil?
   end
 
-  get '/purchases/:id/edit' do              # More than one level on the get path breaks css styling, so redirect to /purchases as a workaround.
+  get '/purchases/:id/edit' do              # More than one level on the get path breaks css styling, so redirect as a workaround.
     redirect '/login' if !logged_in?
     session[:purchases] = {edit: params[:id]}
     redirect '/purchases-workaround'
   end
 
-  get '/purchases/:id' do                   # More than one level on the get path breaks css styling, so redirect to /purchases as a workaround.
+  get '/purchases/:id' do                   # More than one level on the get path breaks css styling, so redirect as a workaround.
     redirect '/login' if !logged_in?
     session[:purchases] = {show: params[:id]}
     redirect '/purchases-workaround'
@@ -62,7 +62,7 @@ class PurchaseController < ApplicationController
         purchase.purchase_items << PurchaseItem.new(purchase_id: purchase.id, item: Item.find(params["select_item_#{i}"]), sale_price: params["price_#{i}"], quantity: params["quantity_#{i}"])
       end
     end
-    if purchase.purchase_items.size > 0     # duplicate code with patch '/purchases/:id'
+    if purchase.purchase_items.size > 0     # duplicate if statement (with patch '/purchases/:id')
       purchase.save
       redirect "/purchases/#{purchase.id}"
     else
@@ -89,7 +89,7 @@ class PurchaseController < ApplicationController
         purchase.purchase_items << PurchaseItem.new(purchase_id: purchase.id, item: Item.find(params["select_item_#{i}"]), sale_price: params["price_#{i}"], quantity: params["quantity_#{i}"])
       end
     end
-    if purchase.purchase_items.size > 0     # duplicate code with post '/purchases'
+    if purchase.purchase_items.size > 0     # duplicate if statement (with post '/purchases')
       purchase.save
       redirect "/purchases/#{purchase.id}"
     else
