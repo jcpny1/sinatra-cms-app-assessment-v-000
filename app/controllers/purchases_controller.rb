@@ -7,6 +7,12 @@ class PurchaseController < ApplicationController
     erb :'/purchases/index'
 	end
 
+  get '/purchases/new' do
+    redirect '/login' if !logged_in?
+    @user = current_user
+    erb :'/purchases/new'
+	end
+
   get '/purchases-workaround' do            # More than one level on the get path breaks css styling, so redirect to /purchases as a workaround.
     redirect '/login' if !logged_in?
     @user = current_user
@@ -17,13 +23,13 @@ class PurchaseController < ApplicationController
     elsif session[:show]
       @purchases = [@user.purchases.find_by(id: session[:show])]
       session.delete(:show)
-      @purchases.size > 0 ? (erb :'/purchases/index') : (redirect '/purchases')
+      !@purchases.first.nil? ? (erb :'/purchases/index') : (redirect '/purchases')
     end
   end
 
   get '/purchases/:id/delete' do            # More than one level on the get path breaks css styling, so redirect to /purchases as a workaround.
     redirect '/login' if !logged_in?
-    purchase = current_user.purchases.find_by(params[:id])
+    purchase = current_user.purchases.find_by(id: params[:id])
     purchase.destroy if !purchase.nil?
     redirect '/purchases'
   end
@@ -41,12 +47,6 @@ class PurchaseController < ApplicationController
 # @user = current_user
 # @purchases = [@user.purchases.find_by(id: params[:id])]
 # erb :'/purchases/index'
-	end
-
-  get '/purchases' do
-    redirect '/login' if !logged_in?
-    @user = current_user
-    erb :'/purchases/new'
 	end
 
   post '/purchases' do

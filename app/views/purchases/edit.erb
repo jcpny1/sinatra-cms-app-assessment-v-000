@@ -4,7 +4,7 @@
 
 <nav>
   <ul>
-    <li><a href="/purchase">Make a new purchase</a></li><br>
+    <li><a href="/purchases/new">Make a new purchase</a></li><br>
     <li><a href="/purchases">Show all purchases</a></li><br>
     <li><a href="/logout">Log out</a></li>
   </ul>
@@ -17,7 +17,7 @@
 			<%= flash[:message] %><br>
 		</font>
 	<% end %>
-  <form method="post" action="/purchase/<%= @purchase.id %>">
+  <form action="/purchases/<%= @purchase.id %>" method="post">
     <input id="hidden" type="hidden" name="_method" value="patch">
     <% (0..2).each do |i| %>
       <p>

@@ -4,7 +4,7 @@
 
 <nav>
   <ul>
-    <li><a href="/purchase">Make a new purchase</a></li><br>
+    <li><a href="/purchases/new">Make a new purchase</a></li><br>
     <li><a href="/purchases">Show all purchases</a></li><br>
     <li><a href="/logout">Log out</a></li>
   </ul>
@@ -17,8 +17,8 @@
       <tr>
         <td>Transaction #: <%= purchase.id %></td>
         <td><%= purchase.created_at.to_time.getlocal("-05:00").asctime %></td>
-				<td><a href="/purchase/<%= purchase.id %>/edit">Edit</a></td>
-				<td><a href="/purchase/<%= purchase.id %>/delete">Delete</a></td>
+				<td><a href="/purchases/<%= purchase.id %>/edit">Edit</a></td>
+				<td><a href="/purchases/<%= purchase.id %>/delete">Delete</a></td>
       </tr>
       <tr>
         <th class="category">Category</th>

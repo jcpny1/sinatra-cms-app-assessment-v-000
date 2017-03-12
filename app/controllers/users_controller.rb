@@ -15,9 +15,9 @@ class UserController < ApplicationController
 		redirect '/'
 	end
 
-  get '/signup' do
+  get '/users/new' do
     redirect '/purchases' if logged_in?
-    erb :'/users/signup'
+    erb :'/users/new'
 	end
 
   post '/login' do
@@ -31,14 +31,14 @@ class UserController < ApplicationController
     end
   end
 
-	post '/signup'  do
+	post '/users'  do
     user = User.new(params)
     if user.save
       session[:user_id] = user.id
       redirect '/purchases'
     else
       flash[:message] = user.errors.full_messages
-      redirect '/signup'
+      redirect '/users/new'
     end
 	end
 end
