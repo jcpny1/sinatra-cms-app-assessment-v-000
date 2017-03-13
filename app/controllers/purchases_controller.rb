@@ -17,11 +17,7 @@ class PurchaseController < ApplicationController
     redirect '/login' if !logged_in?
     purchase = Purchase.new(user_id: current_user.id)
     (0..2).each { |i| purchase.add_item(params, i) }
-    if save_purchase(purchase)
-      redirect "/purchases/#{p.id}"
-    else
-      redirect '/purchases/new'
-    end
+    save_purchase(purchase, '/purchases/new')
   end
 
   get '/purchases/:id/edit' do              # edit a purchase
@@ -35,11 +31,7 @@ class PurchaseController < ApplicationController
     purchase = current_user.purchases.find_by(id: params[:id])
     purchase.purchase_items = []  # Don't do this. Edit existing, add, or delete as needed.
     (0..2).each { |i| purchase.add_item(params, i) }
-    if save_purchase(purchase)
-      redirect "/purchases/#{p.id}"
-    else
-      redirect "/purchases/#{p.id}/edit"
-    end
+    save_purchase(purchase, "/purchases/#{purchase.id}/edit")
   end
 
   get '/purchases/:id/delete' do              # delete a purchase
@@ -56,12 +48,13 @@ class PurchaseController < ApplicationController
     erb :'/purchases/index'
 	end
 
-  def save_purchase(p)
+  def save_purchase(p, failure)
     if p.purchase_items.size > 0
       p.save
+      redirect "/purchases/#{p.id}"
     else
       flash[:message] = "A purchase requires at least one item."
-      false
+      redirect failure
     end
   end
 end
