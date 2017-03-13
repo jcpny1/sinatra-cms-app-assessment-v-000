@@ -12,6 +12,13 @@
 
 <article>
   <p>Customer: <strong><%= @user.name %></strong></p>
+
+	<% if flash.has?(:message) %>
+		<font color="red">
+			<%= flash[:message] %><br>
+		</font>
+	<% end %>
+
   <% @purchases.each do |purchase| %>
     <table width="50%">
       <tr>
